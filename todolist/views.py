@@ -15,21 +15,25 @@ def index(request): #the index view
             return redirect("/") #reloading the page
 
         if "taskDelete" in request.POST: #checking if there is a request to delete a todo
-            
-            enabled = bool(request.POST["checkedbox"])
-            if enabled:
-                checkedlist = request.POST["checkedbox"] #checked todos to be deleted
+                
+            try:
+                checkedlist = request.POST["checkedbox"]    
+                #checked todos to be deleted
                 for todo_id in checkedlist:
                     todo = TodoList.objects.get(id=int(todo_id)) #getting todo id
-                    todo.delete() #deleting todo
-            else:
-                pass    
-
+                    todo.delete() #deleting todo    
+            except:
+                return render(request,'errors/error.html')
+            
+                 
+       
+             
     return render(request, "index.html", {"todos": todos, "categories":categories})
 
 
-# def handler404(request, exception):
-#     return render(request, 'errors/404.html')
+def handler404x(request, exception):
+    return render(request, 'errors/404.html')
 
-# def handler500(request):
-#     return render(request, 'errors/500.html')
+def handler500x(request):
+    return render(request, 'errors/500.html')
+
